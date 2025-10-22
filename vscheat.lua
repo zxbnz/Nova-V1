@@ -1474,7 +1474,7 @@ local SpeedKeybind = MainTab:CreateKeybind({
         walkSpeedSettings.ToggleKey = Key
         Rayfield:Notify({
             Title = "Speed Keybind Updated",
-            Content = "Press "..tostring(Key).." to toggle speed",
+            Content = "Press " Enum.KeyCode((F))" to toggle speed",
             Duration = 2,
             Image = 4483362458,
         })
