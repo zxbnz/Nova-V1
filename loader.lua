@@ -3,12 +3,12 @@ local UIS = game:GetService("UserInputService")
 local PlayerGui = Players.LocalPlayer:WaitForChild("PlayerGui")
 
 -- Destroy any previous loader
-local existing = PlayerGui:FindFirstChild("NovaScriptLoader")
+local existing = PlayerGui:FindFirstChild("CosmicScriptLoader")
 if existing then existing:Destroy() end
 
 -- Create ScreenGui
 local gui = Instance.new("ScreenGui")
-gui.Name = "NovaScriptLoader"
+gui.Name = "CosmicScriptLoader"
 gui.ResetOnSpawn = false
 gui.Parent = PlayerGui
 
@@ -27,7 +27,7 @@ Instance.new("UICorner", frame)
 local title = Instance.new("TextLabel")
 title.Size = UDim2.new(1, 0, 0, 30)
 title.BackgroundTransparency = 1
-title.Text = "nova script loader"
+title.Text = "cosmic script loader"
 title.TextColor3 = Color3.fromRGB(255, 255, 255)
 title.Font = Enum.Font.GothamBold
 title.TextSize = 16
