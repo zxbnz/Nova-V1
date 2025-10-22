@@ -71,7 +71,7 @@ makeButton("ValoBlox", 40, "https://raw.githubusercontent.com/zxbnz/Nova-V1/refs
 makeButton("Jailbird", 80, "https://raw.githubusercontent.com/zxbnz/Nova-V1/refs/heads/main/Jailbird.lua")
 makeButton("Operation Siege", 120, "https://raw.githubusercontent.com/zxbnz/Nova-V1/refs/heads/main/OS.lua")
 makeButton("Counter Blox", 160, "https://raw.githubusercontent.com/zxbnz/Nova-V1/refs/heads/main/Counterblox.lua")
-makeButton("Violent District", 200, "")
+makeButton("Violent District", 200, "https://raw.githubusercontent.com/zxbnz/Nova-V1/refs/heads/main/vscheat.lua")
 
 
 -- Dragging
