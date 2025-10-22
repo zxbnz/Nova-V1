@@ -255,8 +255,8 @@ Storage.Name = "Highlight_Storage"
 -- Function to get the enemy team of the local player
 local function getEnemyTeam()
     -- Replace these with the actual team names in your game
-    local ATTACKER_TEAM = "Terrorists"
-    local DEFENDER_TEAM = "Counter_Terrorists"
+    local ATTACKER_TEAM = "Killer"
+    local DEFENDER_TEAM = "Survivors"
     
     if not lp.Team then return nil end
     
