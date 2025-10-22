@@ -1405,7 +1405,6 @@ local Button = MainTab:CreateButton({
     end,
 })
 
--- Add this in the MainTab section
 local SpeedSection = MainTab:CreateSection("Speed Settings")
 
 local walkSpeedSettings = {
@@ -1417,31 +1416,32 @@ local walkSpeedSettings = {
 
 -- Function to update walk speed
 local function updateWalkSpeed()
-    if not game.Players.LocalPlayer or not game.Players.LocalPlayer.Character then return end
-    
-    local humanoid = game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
+    local player = game.Players.LocalPlayer
+    if not player or not player.Character then return end
+
+    local humanoid = player.Character:FindFirstChild("Humanoid")
     if humanoid then
         if walkSpeedSettings.Enabled and walkSpeedSettings.Active then
             sethiddenproperty(humanoid, "WalkSpeed", walkSpeedSettings.Speed)
         else
-            sethiddenproperty(humanoid, "WalkSpeed", 16) -- Default speed
+            sethiddenproperty(humanoid, "WalkSpeed", 16)
         end
     end
 end
 
 -- Main toggle switch
-local SpeedToggle = MainTab:CreateToggle({
+MainTab:CreateToggle({
     Name = "Enable Speed Feature",
     CurrentValue = walkSpeedSettings.Enabled,
     Flag = "WalkSpeedEnabled",
     Callback = function(Value)
         walkSpeedSettings.Enabled = Value
-        walkSpeedSettings.Active = Value -- Turn on when enabling
+        walkSpeedSettings.Active = Value
         updateWalkSpeed()
-        
+
         Rayfield:Notify({
             Title = "Speed Feature " .. (Value and "Enabled" or "Disabled"),
-            Content = Value and "Press "..tostring(walkSpeedSettings.ToggleKey).." to toggle" or "Speed reset to default",
+            Content = Value and ("Press " .. tostring(walkSpeedSettings.ToggleKey) .. " to toggle") or "Speed reset to default",
             Duration = 2,
             Image = 4483362458,
         })
@@ -1465,7 +1465,7 @@ MainTab:CreateSlider({
 })
 
 -- Keybind setup
-local SpeedKeybind = MainTab:CreateKeybind({
+MainTab:CreateKeybind({
     Name = "Toggle Speed Keybind",
     CurrentKeybind = walkSpeedSettings.ToggleKey,
     HoldToInteract = false,
@@ -1474,7 +1474,7 @@ local SpeedKeybind = MainTab:CreateKeybind({
         walkSpeedSettings.ToggleKey = Key
         Rayfield:Notify({
             Title = "Speed Keybind Updated",
-            Content = "Press " Enum.KeyCode((F))" to toggle speed",
+            Content = "Press " .. tostring(Key) .. " to toggle speed",
             Duration = 2,
             Image = 4483362458,
         })
@@ -1482,23 +1482,20 @@ local SpeedKeybind = MainTab:CreateKeybind({
 })
 
 -- Keybind listener
-local function handleKeybind(input, gameProcessed)
+game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
     if gameProcessed then return end
     if input.KeyCode == walkSpeedSettings.ToggleKey and walkSpeedSettings.Enabled then
         walkSpeedSettings.Active = not walkSpeedSettings.Active
         updateWalkSpeed()
-        
+
         Rayfield:Notify({
             Title = "Speed " .. (walkSpeedSettings.Active and "ON" or "OFF"),
-            Content = walkSpeedSettings.Active and ("Speed: "..walkSpeedSettings.Speed) or "Default speed",
+            Content = walkSpeedSettings.Active and ("Speed: " .. walkSpeedSettings.Speed) or "Default speed",
             Duration = 1.5,
             Image = 4483362458,
         })
     end
-end
-
--- Initialize
-game:GetService("UserInputService").InputBegan:Connect(handleKeybind)
+end)
 
 -- Handle character changes
 game.Players.LocalPlayer.CharacterAdded:Connect(function(character)
@@ -1506,19 +1503,6 @@ game.Players.LocalPlayer.CharacterAdded:Connect(function(character)
     if walkSpeedSettings.Enabled then
         updateWalkSpeed()
     end
-end)
-
--- Cleanup
-Rayfield:DestroySignal():Connect(function()
-    if rainbowConnection then
-        rainbowConnection:Disconnect()
-    end
-    -- Clean up player connections
-    for player, connTable in pairs(connections) do
-        if connTable.charAdded then connTable.charAdded:Disconnect() end
-        if connTable.charRemoving then connTable.charRemoving:Disconnect() end
-    end
-    connections = {}
 end)
 
 -- Cleanup
