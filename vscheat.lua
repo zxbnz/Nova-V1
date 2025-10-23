@@ -1,35 +1,3 @@
-getgenv().WalkSpeedValue = 40 -- Set your desired speed here
-local defaultSpeed = 16
-local toggled = false
-
-local Player = game:GetService("Players").LocalPlayer
-local UserInputService = game:GetService("UserInputService")
-
--- Apply speed based on toggle state
-local function applySpeed()
-    if Player.Character and Player.Character:FindFirstChild("Humanoid") then
-        local hum = Player.Character.Humanoid
-        hum.WalkSpeed = toggled and getgenv().WalkSpeedValue or defaultSpeed
-    end
-end
-
--- Listen for Q key press
-UserInputService.InputBegan:Connect(function(input, gameProcessed)
-    if gameProcessed then return end
-    if input.KeyCode == Enum.KeyCode.Q then
-        toggled = not toggled
-        applySpeed()
-        print("WalkSpeed toggled:", toggled and getgenv().WalkSpeedValue or defaultSpeed)
-    end
-end)
-
--- Lock WalkSpeed if game tries to change it
-Player.Character:WaitForChild("Humanoid"):GetPropertyChangedSignal("WalkSpeed"):Connect(function()
-    applySpeed()
-end)
-
--- Initial apply
-applySpeed()
 local teamCheck = false
 local fov = 100
 local smoothing = 0.03
