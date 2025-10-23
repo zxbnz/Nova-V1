@@ -1,4 +1,1 @@
-100+ Safe
-External Coming soon
-Operation Siege Script is Discontinued
-Jailbird Script Discontinued
+![Static Badge](https://img.shields.io/badge/Operation%20Siege-gray)
