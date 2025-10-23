@@ -1,7 +1,7 @@
--- 🌌 Cosmic Key Loader with Expiration Support
+-- 🌌 Cosmic Key Loader with Expiration Support + Key Info
 
 -- Load keys from external Lua file
-local keySource = game:HttpGet("https://raw.githubusercontent.com/zxbnz/Nova-V1/refs/heads/main/keys.lua") -- Replace with your actual URL
+local keySource = game:HttpGet("https://raw.githubusercontent.com/zxbnz/Nova-V1/refs/heads/main/keys.lua")
 local allowedKeys = loadstring(keySource)()
 local currentTime = os.time()
 
@@ -10,8 +10,8 @@ local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
 ScreenGui.Name = "CosmicKeyLoader"
 
 local Frame = Instance.new("Frame", ScreenGui)
-Frame.Size = UDim2.new(0, 300, 0, 150)
-Frame.Position = UDim2.new(0.5, -150, 0.5, -75)
+Frame.Size = UDim2.new(0, 300, 0, 180)
+Frame.Position = UDim2.new(0.5, -150, 0.5, -90)
 Frame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 Frame.BorderSizePixel = 0
 
@@ -57,9 +57,15 @@ Submit.MouseButton1Click:Connect(function()
     for _, entry in ipairs(allowedKeys) do
         if inputKey == entry.key then
             if currentTime <= entry.expires then
+                local timeLeft = entry.expires - currentTime
+                local days = math.floor(timeLeft / 86400)
+                local hours = math.floor((timeLeft % 86400) / 3600)
+                local minutes = math.floor((timeLeft % 3600) / 60)
+
                 Status.TextColor3 = Color3.new(0.2, 1, 0.2)
-                Status.Text = "✅ Key accepted!"
-                wait(1)
+                Status.Text = string.format("✅ Key accepted: %s\n⏳ Time left: %d days, %d hrs, %d min", inputKey, days, hours, minutes)
+
+                wait(5) -- Delay before loading script
                 ScreenGui:Destroy()
 
                 -- Load your actual script here
