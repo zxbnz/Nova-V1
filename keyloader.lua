@@ -63,7 +63,7 @@ Submit.MouseButton1Click:Connect(function()
                 ScreenGui:Destroy()
 
                 -- Load your actual script here
-                loadstring(game:HttpGet("https://yourdomain.com/script.lua"))()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/zxbnz/Nova-V1/refs/heads/main/loader.lua"))()
                 return
             else
                 Status.TextColor3 = Color3.new(1, 0.6, 0.2)
