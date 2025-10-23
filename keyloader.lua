@@ -1,7 +1,7 @@
 -- 🌌 Cosmic Key Loader with Expiration Support
 
 -- Load keys from external Lua file
-local keySource = game:HttpGet("https://yourdomain.com/cosmic_keys.lua") -- Replace with your actual URL
+local keySource = game:HttpGet("https://raw.githubusercontent.com/zxbnz/Nova-V1/refs/heads/main/keys.lua") -- Replace with your actual URL
 local allowedKeys = loadstring(keySource)()
 local currentTime = os.time()
 
