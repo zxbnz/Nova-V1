@@ -1407,46 +1407,6 @@ local Button = MainTab:CreateButton({
 
 local SpeedSection = MainTab:CreateSection("Speed Settings")
 
-local walkSpeedSettings = {
-    Enabled = false,  -- Master switch for the feature
-    Active = false,   -- Whether speed is currently applied
-    Speed = 50,       -- Default speed value
-    ToggleKey = Enum.KeyCode.F
-}
-
--- Function to update walk speed
-local function updateWalkSpeed()
-    local player = game.Players.LocalPlayer
-    if not player or not player.Character then return end
-
-    local humanoid = player.Character:FindFirstChild("Humanoid")
-    if humanoid then
-        if walkSpeedSettings.Enabled and walkSpeedSettings.Active then
-            sethiddenproperty(humanoid, "WalkSpeed", walkSpeedSettings.Speed)
-        else
-            sethiddenproperty(humanoid, "WalkSpeed", 16)
-        end
-    end
-end
-
--- Main toggle switch
-MainTab:CreateToggle({
-    Name = "Enable Speed Feature",
-    CurrentValue = walkSpeedSettings.Enabled,
-    Flag = "WalkSpeedEnabled",
-    Callback = function(Value)
-        walkSpeedSettings.Enabled = Value
-        walkSpeedSettings.Active = Value
-        updateWalkSpeed()
-
-        Rayfield:Notify({
-            Title = "Speed Feature " .. (Value and "Enabled" or "Disabled"),
-            Content = Value and ("Press " .. tostring(walkSpeedSettings.ToggleKey) .. " to toggle") or "Speed reset to default",
-            Duration = 2,
-            Image = 4483362458,
-        })
-    end,
-})
 
 -- Speed slider
 MainTab:CreateSlider({
@@ -1464,47 +1424,39 @@ MainTab:CreateSlider({
     end,
 })
 
--- Keybind setup
-MainTab:CreateKeybind({
-    Name = "Toggle Speed Keybind",
-    CurrentKeybind = walkSpeedSettings.ToggleKey,
-    HoldToInteract = false,
-    Flag = "WalkSpeedKeybind",
-    Callback = function(Key)
-        walkSpeedSettings.ToggleKey = Key
-        Rayfield:Notify({
-            Title = "Speed Keybind Updated",
-            Content = "Press " .. tostring(Key) .. " to toggle speed",
-            Duration = 2,
-            Image = 4483362458,
-        })
-    end,
-})
 
--- Keybind listener
-game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
+getgenv().WalkSpeedValue = 40 -- Set your desired speed here
+local defaultSpeed = 16
+local toggled = false
+
+local Player = game:GetService("Players").LocalPlayer
+local UserInputService = game:GetService("UserInputService")
+
+-- Apply speed based on toggle state
+local function applySpeed()
+    if Player.Character and Player.Character:FindFirstChild("Humanoid") then
+        local hum = Player.Character.Humanoid
+        hum.WalkSpeed = toggled and getgenv().WalkSpeedValue or defaultSpeed
+    end
+end
+
+-- Listen for Q key press
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
     if gameProcessed then return end
-    if input.KeyCode == walkSpeedSettings.ToggleKey and walkSpeedSettings.Enabled then
-        walkSpeedSettings.Active = not walkSpeedSettings.Active
-        updateWalkSpeed()
-
-        Rayfield:Notify({
-            Title = "Speed " .. (walkSpeedSettings.Active and "ON" or "OFF"),
-            Content = walkSpeedSettings.Active and ("Speed: " .. walkSpeedSettings.Speed) or "Default speed",
-            Duration = 1.5,
-            Image = 4483362458,
-        })
+    if input.KeyCode == Enum.KeyCode.Q then
+        toggled = not toggled
+        applySpeed()
+        print("WalkSpeed toggled:", toggled and getgenv().WalkSpeedValue or defaultSpeed)
     end
 end)
 
--- Handle character changes
-game.Players.LocalPlayer.CharacterAdded:Connect(function(character)
-    character:WaitForChild("Humanoid")
-    if walkSpeedSettings.Enabled then
-        updateWalkSpeed()
-    end
+-- Lock WalkSpeed if game tries to change it
+Player.Character:WaitForChild("Humanoid"):GetPropertyChangedSignal("WalkSpeed"):Connect(function()
+    applySpeed()
 end)
 
+-- Initial apply
+applySpeed()
 -- Cleanup
 Rayfield:DestroySignal():Connect(function()
     -- Reset speed when script is destroyed
