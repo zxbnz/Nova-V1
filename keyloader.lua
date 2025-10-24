@@ -1,7 +1,7 @@
 -- 🌌 Cosmic Key Loader with Expiration Support + Key Info
 
 -- Load keys from external Lua file
-local keySource = loadstring(game:HttpGet("https://pastebin.com/raw/ysy8biaN"))()
+local allowedKeys = loadstring(game:HttpGet("https://pastebin.com/raw/ysy8biaN"))()
 local currentTime = os.time()
 
 -- Create GUI
