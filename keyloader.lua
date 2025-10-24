@@ -3,6 +3,7 @@
 -- Load keys from external Lua file
 local allowedKeys = loadstring(game:HttpGet("https://pastebin.com/raw/ysy8biaN"))()
 local currentTime = os.time()
+print("Loaded keys:", typeof(allowedKeys), #allowedKeys)
 
 -- Create GUI
 local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
