@@ -1,4 +1,4 @@
-local teamCheck = false
+local teamCheck = true
 local fov = 100
 local smoothing = 0.03
 local predictionFactor = 0.1  -- Adjust this factor to improve prediction accuracy
@@ -15,7 +15,7 @@ local Players = game:GetService("Players")
  
  
 local FOVring = Drawing.new("Circle")
-FOVring.Visible = true
+FOVring.Visible = false
 FOVring.Thickness = 1
 FOVring.Radius = fov
 FOVring.Transparency = 0.8
@@ -23,7 +23,7 @@ FOVring.Color = Color3.fromRGB(255, 128, 128)
 FOVring.Position = workspace.CurrentCamera.ViewportSize / 2
  
 local currentTarget = nil
-local aimbotEnabled = true
+local aimbotEnabled = false
 local toggleState = false  -- Variable to keep track of toggle state
 local debounce = false  -- Debounce variable
 
