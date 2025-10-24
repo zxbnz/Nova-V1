@@ -2,7 +2,6 @@
 
 -- Load keys from external Lua file
 local keySource = game:HttpGet("https://pastebin.com/LEzdGFtX")
-local allowedKeys = loadstring(keySource)()
 local currentTime = os.time()
 
 -- Create GUI
