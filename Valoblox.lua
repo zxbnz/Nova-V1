@@ -13,13 +13,6 @@ local UserInputService = game:GetService("UserInputService")
 local StarterGui = game:GetService("StarterGui")
 local Players = game:GetService("Players")
  
-StarterGui:SetCore("SendNotification", {
-    Title = "Nova Aimbot",
-    Text = "Nova Aimbot has succesfully loaded!",
-    Icon = "rbxassetid://139544195716715", 
-    Duration = 4
-})
-
  
 local FOVring = Drawing.new("Circle")
 FOVring.Visible = true
