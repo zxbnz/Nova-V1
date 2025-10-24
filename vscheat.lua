@@ -690,6 +690,40 @@ if playerESPSettings.Enabled then
     setupPlayerESP()
 end
 
+local Players = game:GetService("Players")
+local Teams = game:GetService("Teams")
+local localPlayer = Players.LocalPlayer
+
+-- Function to update ESP targets
+local function updateESP()
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= localPlayer then
+            local isEnemy = player.Team ~= localPlayer.Team
+            -- Replace this with your ESP logic
+            if isEnemy then
+                print(player.Name .. " is an ENEMY")
+                -- ESP: highlight in red, show tag, etc.
+            else
+                print(player.Name .. " is a TEAMMATE")
+                -- ESP: hide or show in blue, etc.
+            end
+        end
+    end
+end
+
+-- Initial ESP setup
+updateESP()
+
+-- Update ESP when your team changes
+localPlayer:GetPropertyChangedSignal("Team"):Connect(function()
+    updateESP()
+end)
+
+-- Optional: update ESP when new players join
+Players.PlayerAdded:Connect(function()
+    updateESP()
+end)
+
 
 local flysigmasection = MainTab:CreateSection("Fly Cheats")
 -- Store flight-related variables outside the toggle for access
