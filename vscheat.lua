@@ -244,31 +244,66 @@ local Storage = Instance.new("Folder")
 Storage.Parent = CoreGui
 Storage.Name = "Highlight_Storage"
 
--- Function to get the enemy team of the local player
+local Players = game:GetService("Players")
+local lp = Players.LocalPlayer
+
+local ATTACKER_TEAM = "Killer"
+local DEFENDER_TEAM = "Survivors"
+
+-- Get enemy team name
 local function getEnemyTeam()
-    -- Replace these with the actual team names in your game
-    local ATTACKER_TEAM = "Killer"
-    local DEFENDER_TEAM = "Survivors"
-    
     if not lp.Team then return nil end
-    
     if lp.Team.Name == ATTACKER_TEAM then
         return DEFENDER_TEAM
     elseif lp.Team.Name == DEFENDER_TEAM then
         return ATTACKER_TEAM
     end
-    
     return nil
 end
 
--- Function to check if a player is on the enemy team
+-- Check if a player is an enemy
 local function isEnemy(plr)
     if not plr.Team then return false end
     local enemyTeam = getEnemyTeam()
     if not enemyTeam then return false end
-    
     return plr.Team.Name == enemyTeam
 end
+
+-- Your ESP logic here
+local function updateESP()
+    for _, plr in ipairs(Players:GetPlayers()) do
+        if plr ~= lp and plr.Character then
+            if isEnemy(plr) then
+                print(plr.Name .. " is an ENEMY")
+                -- ESP: highlight red, show tag, etc.
+            else
+                print(plr.Name .. " is a TEAMMATE")
+                -- ESP: hide or highlight blue
+            end
+        end
+    end
+end
+
+-- Listen for your own team change
+lp:GetPropertyChangedSignal("Team"):Connect(updateESP)
+
+-- Listen for new players joining
+Players.PlayerAdded:Connect(function(plr)
+    plr:GetPropertyChangedSignal("Team"):Connect(updateESP)
+    plr.CharacterAdded:Connect(updateESP)
+    updateESP()
+end)
+
+-- Listen for existing players' team changes and respawns
+for _, plr in ipairs(Players:GetPlayers()) do
+    if plr ~= lp then
+        plr:GetPropertyChangedSignal("Team"):Connect(updateESP)
+        plr.CharacterAdded:Connect(updateESP)
+    end
+end
+
+-- Initial ESP setup
+updateESP()
 
 -- Function to calculate distance between two positions
 local function getDistanceFromPlayer(targetPosition)
