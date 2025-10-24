@@ -5,7 +5,12 @@
 
 
 ## Updates
-
+![Static Badge](https://img.shields.io/badge/Version%201.2-green)
+![Static Badge](https://img.shields.io/badge/Change%20Logs-pink)
+> Fix a bug when you load the script fov circle, aimbot, were enabled, this caused many problem within the script.
+ >Key system is in the works they're 4 types of keys. 1 Day, 1 Week, 1 Month, And a Lifetime Key all are purchaseable within the discord. 
+ Team check improvements will be in future patch note. Speed Hacks have been removed as we're testing a better speed cheat. Violence District cheat is almost done being finished just have to add the team check and speed.
+ We're also thinking of adding a dash for Violence District.
  ![Static Badge](https://img.shields.io/badge/Version%201.1-green)
 ![Static Badge](https://img.shields.io/badge/Change%20Logs-pink)
 Removed Operation Siege and Jailbird Script as they're Detected and have been discontinued.
