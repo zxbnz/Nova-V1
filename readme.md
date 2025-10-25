@@ -1,5 +1,5 @@
 
-# Cosmic/Nova Cheats
+# Cosmic's Nova Cheat
 
 ![Static Badge](https://img.shields.io/badge/%F0%9F%8C%A0Cosmic-purple)
 
