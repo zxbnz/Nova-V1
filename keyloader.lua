@@ -1,9 +1,16 @@
--- 🌌 Cosmic Key Loader with Expiration Support + Key Info
+-- 🌌 Cosmic Key Loader with Redemption-Based Expiration
 
 -- Load keys from external Lua file
 local allowedKeys = loadstring(game:HttpGet("https://pastebin.com/raw/ysy8biaN"))()
 local currentTime = os.time()
-print("Loaded keys:", typeof(allowedKeys), #allowedKeys)
+
+-- Duration mapping
+local durations = {
+    ["1d"] = 86400,
+    ["7d"] = 604800,
+    ["30d"] = 2592000,
+    ["lifetime"] = math.huge
+}
 
 -- Create GUI
 local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
@@ -56,8 +63,17 @@ Submit.MouseButton1Click:Connect(function()
     local inputKey = TextBox.Text
     for _, entry in ipairs(allowedKeys) do
         if inputKey == entry.key then
-            if currentTime <= entry.expires then
-                local timeLeft = entry.expires - currentTime
+            if not entry.used then
+                entry.redeemedAt = currentTime
+                entry.used = true
+            end
+
+            local expiresAt = entry.duration == "lifetime"
+                and math.huge
+                or entry.redeemedAt + durations[entry.duration]
+
+            if currentTime <= expiresAt then
+                local timeLeft = expiresAt - currentTime
                 local days = math.floor(timeLeft / 86400)
                 local hours = math.floor((timeLeft % 86400) / 3600)
                 local minutes = math.floor((timeLeft % 3600) / 60)
@@ -65,10 +81,8 @@ Submit.MouseButton1Click:Connect(function()
                 Status.TextColor3 = Color3.new(0.2, 1, 0.2)
                 Status.Text = string.format("✅ Key accepted: %s\n⏳ Time left: %d days, %d hrs, %d min", inputKey, days, hours, minutes)
 
-                wait(5) -- Delay before loading script
+                wait(5)
                 ScreenGui:Destroy()
-
-                -- Load your actual script here
                 loadstring(game:HttpGet("https://raw.githubusercontent.com/zxbnz/Nova-V1/refs/heads/main/loader.lua"))()
                 return
             else
